@@ -1,32 +1,27 @@
-# Prerequisites
-*.d
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Build output
+dist/
+build/
 
-# Precompiled Headers
-*.gch
-*.pch
+# IDE/Editor
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# OS
+.DS_Store
+Thumbs.db
 
-# Fortran module files
-*.mod
-*.smod
+# Compiled output
+*.js
+*.js.map
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+# Dependency lock files
+package-lock.json
+yarn.lock
