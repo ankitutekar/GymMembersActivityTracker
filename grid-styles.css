@@ -1,0 +1,34 @@
+.rootContainer {
+	display: flex;
+	flex-direction: column;
+	block-size: 100%;
+	gap: 10px;
+
+	> .rdg {
+		flex: 1;
+	}
+}
+
+.square-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.square-red {
+	display: block;
+	width: 90px;
+	height: 17px;
+	background-color: red;
+	margin-top: 8px;
+	margin-bottom: 10px;
+}
+
+.square-yellow {
+	display: block;
+	width: 90px;
+	height: 17px;
+	background-color: yellow;
+	margin-top: 8px;
+	margin-bottom: 10px;
+}
