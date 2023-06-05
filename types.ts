@@ -1,5 +1,7 @@
 interface Row {
 	[key: string]: string;
 }
-
-export { Row };
+interface Filter {
+	name: string;
+}
+export { Row, Filter };

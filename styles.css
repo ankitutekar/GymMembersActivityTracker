@@ -1,0 +1,92 @@
+.rootContainer {
+	display: flex;
+	flex-direction: column;
+	block-size: 100%;
+	gap: 10px;
+
+	> .rdg {
+		flex: 1;
+	}
+}
+
+.square-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.square-red {
+	display: block;
+	width: 90px;
+	height: 17px;
+	background-color: red;
+	margin-top: 8px;
+	margin-bottom: 10px;
+}
+
+.square-yellow {
+	display: block;
+	width: 90px;
+	height: 17px;
+	background-color: yellow;
+	margin-top: 8px;
+	margin-bottom: 10px;
+}
+
+select {
+	appearance: none;
+	padding: 8px 12px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: #f0f0f0;
+	color: #333;
+	cursor: pointer;
+}
+
+select:hover {
+	border-color: #999;
+}
+
+select:focus {
+	outline: none;
+	border-color: #2196f3;
+	box-shadow: 0 0 3px rgba(33, 150, 243, 0.5);
+}
+
+select option {
+	background-color: #f0f0f0;
+	color: #333;
+}
+
+select option:hover {
+	background-color: #d3d3d3;
+}
+
+.toolbar {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-block-end: 8px;
+}
+
+.filter-cell {
+	line-height: 35px;
+	padding: 0;
+	> div {
+		padding: 0 8px;
+		&:first-child {
+			border-bottom: 1px solid var(--border-color);
+		}
+	}
+}
+
+.filter-header {
+	width: 100%;
+	padding: 4px;
+	font-size: 14px;
+}
+
+.left-mergin {
+	margin-left: 25px;
+}
