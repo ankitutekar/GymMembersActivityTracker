@@ -1,5 +1,6 @@
 import React, { useState, useMemo, createContext, useContext } from "react";
 import DataGrid, { SortColumn, Column } from "react-data-grid";
+import { fakerEN_IN as faker } from "@faker-js/faker";
 
 import { Row, Filter } from "./types";
 import "./grid-styles.css";
@@ -9,6 +10,7 @@ import "./styles.css";
 import { exportToCsv, exportToPdf } from "./exportUtils";
 
 //type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+let filters: Filter;
 const FilterContext = createContext<Filter | undefined>({ name: "" });
 function ExportButton({
 	onExport,
@@ -49,6 +51,10 @@ const App: React.FC = () => {
 		);
 	}
 
+	const [filters, setFilters] = useState<Filter>({
+		name: "",
+	});
+
 	const generateColumnsData = (): Column<Row>[] => {
 		const columnsData: Column<Row>[] = [];
 		const leavePossibleValues = ["ON LEAVE", "TENTATIVE", "NO"];
@@ -62,14 +68,15 @@ const App: React.FC = () => {
 			width: "15%",
 			frozen: true,
 			renderSummaryCell() {
-				return <strong>Total</strong>;
+				return <strong>Total Leaves</strong>;
 			},
+			cellClass: "text-align-center",
 			headerCellClass: "filter-cell",
 			renderHeaderCell: (p) => (
 				<FilterRenderer column={p.column}>
 					{(filters: any) => (
 						<input
-							className="filter-cell left-mergin"
+							className="filter-cell"
 							value={filters.name}
 							onChange={(e) =>
 								setFilters({
@@ -91,6 +98,7 @@ const App: React.FC = () => {
 				name: i.toString(),
 				editable: true,
 				sortable: true,
+				headerCellClass: "text-align-center",
 				renderCell: (p) => (
 					<div className="square-container">
 						<span
@@ -123,7 +131,7 @@ const App: React.FC = () => {
 				),
 				renderSummaryCell({ row }) {
 					const rowData = row as any;
-					return `${rowData.totalCount} records`;
+					return `${rowData["onLeavePercent_" + i]} %`;
 				},
 			};
 			columnsData.push(column);
@@ -134,10 +142,9 @@ const App: React.FC = () => {
 
 	const generateMockRowsData = (): Row[] => {
 		const mockData: Row[] = [];
-
 		for (let i = 1; i <= 100; i++) {
 			const row = {} as Row;
-			row["resourceName"] = "Ankit Core #" + i.toString();
+			row["resourceName"] = faker.person.fullName();
 			for (let j = 1; j <= 31; j++) {
 				const decider = Math.random();
 				row[j.toString()] =
@@ -158,10 +165,6 @@ const App: React.FC = () => {
 	const rowsData: Row[] = generateMockRowsData();
 	const [rows, setRows] = useState(rowsData);
 	const [sortColumns, setSortColumns] = useState<readonly SortColumn[]>([]);
-
-	const [filters, setFilters] = useState<Filter>({
-		name: "",
-	});
 
 	function rowKeyGetter(row: Row) {
 		return row.resourceName;
@@ -213,14 +216,43 @@ const App: React.FC = () => {
 	const filteredRows = useMemo(() => {
 		if (!filters.name) return sortedRows;
 		return sortedRows.filter((r) => {
-			return filters.name ? r.resourceName.includes(filters.name) : true;
+			return filters.name
+				? r.resourceName
+						.toLowerCase()
+						.startsWith(filters.name.toLowerCase())
+				: true;
 		});
 	}, [sortedRows, filters]);
+
+	const summaryRows = useMemo((): readonly Row[] => {
+		let rowObj = {
+			id: "total_0",
+			totalCount: filteredRows.length.toString(),
+		};
+		let totalLeavesOnTheDay: number = 0;
+		let j: number = 1;
+		for (j = 1; j <= 31; j++) {
+			totalLeavesOnTheDay = filteredRows.filter(
+				(r) => r[j] == "ON LEAVE"
+			).length;
+
+			const percentLeavesOnTheDay = (
+				(totalLeavesOnTheDay / filteredRows.length) *
+				100
+			).toFixed(2);
+			rowObj = {
+				...rowObj,
+				["onLeavePercent_" + j.toString()]: percentLeavesOnTheDay,
+			};
+		}
+		return [rowObj];
+	}, [filteredRows]);
 
 	const gridElement = (
 		<DataGrid
 			columns={columnsData}
 			rows={filteredRows}
+			bottomSummaryRows={summaryRows}
 			rowKeyGetter={rowKeyGetter}
 			onRowsChange={setRows}
 			headerRowHeight={95}

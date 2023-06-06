@@ -73,6 +73,7 @@ select option:hover {
 .filter-cell {
 	line-height: 35px;
 	padding: 0;
+	text-align: center !important;
 	> div {
 		padding: 0 8px;
 		&:first-child {
@@ -89,4 +90,8 @@ select option:hover {
 
 .left-mergin {
 	margin-left: 25px;
+}
+
+.text-align-center {
+	text-align: center;
 }
