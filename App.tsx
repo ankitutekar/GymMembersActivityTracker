@@ -6,10 +6,8 @@ import { Row, Filter } from "./types";
 import "./grid-styles.css";
 import "./styles.css";
 
-//import { columnsData, rowsData, filters } from "./grid-builder";
 import { exportToCsv, exportToPdf } from "./exportUtils";
 
-//type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 let filters: Filter;
 const FilterContext = createContext<Filter | undefined>({ name: "" });
 function ExportButton({
